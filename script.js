@@ -1,4 +1,4 @@
-// ১ থেকে ৩১ দিন যোগ করা
+// দিন ও সাল ড্রপডাউন তৈরি করা
 const daySelect = document.getElementById('day');
 for (let i = 1; i <= 31; i++) {
     let opt = document.createElement('option');
@@ -7,44 +7,70 @@ for (let i = 1; i <= 31; i++) {
     daySelect.appendChild(opt);
 }
 
-// ১২টি মাসের নাম যোগ করা
-const monthSelect = document.getElementById('month');
-const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-monthSelect.innerHTML = '<option value="">মাস</option>'; 
-months.forEach((month, index) => {
-    let opt = document.createElement('option');
-    opt.value = index + 1; // মে মাসের মান হবে ৫
-    opt.innerHTML = month;
-    monthSelect.appendChild(opt);
-});
-
-// ২০০৫ থেকে ২০২৫ পর্যন্ত সাল যোগ করা
 const yearSelect = document.getElementById('year');
-yearSelect.innerHTML = '<option value="">সাল</option>';
-for (let i = 2005; i <= 2025; i++) {
+for (let i = 2000; i <= 2026; i++) {
     let opt = document.createElement('option');
     opt.value = i;
     opt.innerHTML = i;
+    if(i === 2008) opt.selected = true; // ২০০৮ ডিফল্ট সিলেক্ট থাকবে
     yearSelect.appendChild(opt);
 }
 
-// লগইন লজিক
+// লগইন লজিক এবং টাইপিং ইফেক্ট
 document.getElementById('login-btn').addEventListener('click', function() {
     const day = document.getElementById('day').value;
     const month = document.getElementById('month').value;
     const year = document.getElementById('year').value;
 
-    // শর্ত: ২ মে ২০০৮
+    // শর্ত যাচাই: ২ মে ২০০৮
     if (day === "2" && month === "5" && year === "2008") {
+        // লগইন বক্স লুকিয়ে সারপ্রাইজ স্ক্রিন দেখানো
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
+        
+        // টাইপিং ইফেক্ট শুরু করা
+        typeWriter();
     } else {
+        // ভুল হলে এরর মেসেজ দেখানো
         document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('error-msg').innerText = "ভুল তথ্য! সঠিক জন্মতারিখ দাও।";
     }
 });
 
-// খাম খোলার লজিক
+// টাইপিং ইফেক্টের জন্য ভেরিয়েবল
+const textToType = [
+    "শুভ জন্মদিন, মাইশা!",
+    "প্রিয় বেস্ট ফ্রেন্ড,",
+    "২ মে মানে আজ তোর বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট একটা উইশ+উপহার। দোয়া করি যেন তুই তোর জীবনের নেগেটিভ ভাইব্রেশনগুলো কে পজিটিভ ভাইব্রেশনে রূপান্তর করতে পারিস। আশা করি, সামনের বছরগুলো তোর জন্য আরও সুন্দর হবে।",
+    "ভালো থাক, সুস্থ থাক এবং সবসময় হাসি-খুশি থাক। এটুকুই চাই সবসময়;",
+    "অনেক ভালোবাসা রইলো।",
+    "ইতি,",
+    "তোর জানোয়ার"
+];
+
+let lineIndex = 0;
+let charIndex = 0;
+const typingSpeed = 50; // টাইপিং গতি (মিলি-সেকেন্ডে)
+
+function typeWriter() {
+    if (lineIndex < textToType.length) {
+        let currentLine = textToType[lineIndex];
+        if (charIndex < currentLine.length) {
+            // চিঠি অংশে লেখাগুলো একে একে যোগ করা
+            document.querySelector('.letter .text').innerHTML += currentLine[charIndex];
+            charIndex++;
+            setTimeout(typeWriter, typingSpeed);
+        } else {
+            // একটি লাইন শেষ হলে নতুন লাইনে যাওয়া
+            document.querySelector('.letter .text').innerHTML += "<br>";
+            lineIndex++;
+            charIndex = 0;
+            setTimeout(typeWriter, typingSpeed + 500); // লাইনের মাঝে বিরতি
+        }
+    }
+}
+
+// চিঠি খোলার লজিক
 document.getElementById('envelope').addEventListener('click', function() {
     this.classList.toggle('open');
 });
+            
