@@ -1,0 +1,152 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #fdeff9, #ecf2f9);
+    font-family: 'Hind Siliguri', sans-serif;
+    overflow: hidden;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+/* লগইন বক্স */
+.login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 85%;
+    max-width: 350px;
+    z-index: 20;
+}
+
+.instruction { font-size: 14px; color: #555; margin-bottom: 20px; }
+.top-inst { position: absolute; top: 80px; font-weight: bold; color: #ff4757; animation: bounce 2s infinite; }
+
+button {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* এনভেলপ ও লেটার মেকানিজম */
+.container { position: relative; z-index: 10; margin-top: 50px; }
+
+.envelope-wrapper {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #ff6b6b;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+
+/* খামের ওপরের ভাঁজ */
+.envelope-wrapper:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: 4;
+    border-top: 110px solid #ff6b6b;
+    border-right: 150px solid transparent;
+    border-left: 150px solid transparent;
+    transform-origin: top;
+    transition: all 0.6s ease-in-out;
+}
+
+/* খামের নিচের ও পাশের অংশ */
+.envelope-wrapper:after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    width: 0;
+    height: 0;
+    border-top: 110px solid transparent;
+    border-right: 150px solid #ff8787;
+    border-bottom: 90px solid #ff8787;
+    border-left: 150px solid #ff8787;
+}
+
+/* খাম খুললে ভাঁজ উল্টে যাবে */
+.envelope-wrapper.open:before {
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+
+/* আসল চিঠি (শুরুতে ভেতরে লুকানো থাকবে) */
+.letter {
+    position: absolute;
+    left: 10%;
+    bottom: 5px;
+    width: 80%;
+    height: 90%;
+    background-color: #ffffff;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.6s ease-in-out;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* ক্লিক করলে চিঠি বেরিয়ে আসবে */
+.envelope-wrapper.open .letter {
+    bottom: 120px;
+    transform: scale(1.15);
+    z-index: 5;
+    height: auto; /* লেখা অনুযায়ী বড় হবে */
+    max-height: 280px;
+}
+
+.text .title { color: #d63031; font-size: 16px; margin: 0 0 5px 0; }
+.text p { font-size: 11px; color: #333; line-height: 1.4; text-align: justify; margin: 5px 0; }
+.love { font-weight: bold; margin-top: 8px !important; }
+.signature { font-family: 'Freehand', cursive; font-size: 15px; color: #d63031; margin-top: 5px; display: block; }
+
+/* হার্ট বাটন */
+.heart {
+    position: absolute;
+    top: 100px;
+    left: 135px;
+    width: 30px;
+    height: 30px;
+    background-color: #d63031;
+    z-index: 6;
+    transform: rotate(-45deg);
+    transition: 0.5s;
+}
+.heart:before, .heart:after { content: ""; position: absolute; width: 30px; height: 30px; background-color: #d63031; border-radius: 50%; }
+.heart:before { top: -15px; left: 0; }
+.heart:after { top: 0; left: 15px; }
+
+.envelope-wrapper.open .heart { opacity: 0; pointer-events: none; }
+
+/* বেলুন এনিমেশন */
+.balloon { position: absolute; bottom: -150px; width: 40px; height: 55px; border-radius: 50%; opacity: 0.7; animation: fly 8s infinite ease-in; }
+.balloon:nth-child(1) { left: 10%; background: #ff7675; }
+.balloon:nth-child(2) { left: 30%; background: #fdcb6e; animation-delay: 2s; }
+.balloon:nth-child(3) { left: 50%; background: #81ecec; animation-delay: 4s; }
+.balloon:nth-child(4) { left: 75%; background: #a29bfe; animation-delay: 1s; }
+.balloon:nth-child(5) { left: 90%; background: #55efc4; animation-delay: 6s; }
+
+@keyframes fly { 0% { transform: translateY(0); } 100% { transform: translateY(-120vh); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  
