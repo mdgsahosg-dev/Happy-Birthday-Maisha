@@ -1,4 +1,4 @@
-// ১. ড্রপডাউন সেট করা (Date, Month, Year)
+// ১. ড্রপডাউন সেট করা (Date, Month, Year অপশনসহ)
 const daySelect = document.getElementById('day');
 daySelect.innerHTML = '<option value="" selected disabled>Date</option>'; 
 for (let i = 1; i <= 31; i++) { 
@@ -13,18 +13,15 @@ months.forEach((m, i) => {
 });
 
 const yearSelect = document.getElementById('year');
+// এখানে "Year" লেখাটি ডিফল্ট হিসেবে থাকবে
 yearSelect.innerHTML = '<option value="" selected disabled>Year</option>'; 
-// সালগুলো যুক্ত করার লুপ (২০০৪ থেকে ২০২৬)
+// ২০০৪ থেকে ২০২৬ পর্যন্ত লুপ
 for (let i = 2004; i <= 2026; i++) { 
-    let opt = document.createElement('option');
-    opt.value = i;
-    opt.innerHTML = i;
-    yearSelect.appendChild(opt);
+    yearSelect.innerHTML += `<option value="${i}">${i}</option>`; 
 }
 
-// ২. লগইন বাটন কাজ করার লজিক
+// ২. লগইন লজিক (সঠিক তারিখ: ২ মে ২০০৮)
 document.getElementById('login-btn').addEventListener('click', function() {
-    // সঠিক জন্মতারিখ: ২ মে ২০০৮
     if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
@@ -33,7 +30,7 @@ document.getElementById('login-btn').addEventListener('click', function() {
     }
 });
 
-// ৩. টাইপিং ইফেক্ট (চিঠির জন্য)
+// ৩. টাইপিং ইফেক্ট ও অটো-স্ক্রল
 const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্ট ফ্রেন্ড, ২ মে আজ তোর বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট উইশ। দোয়া করি তোর জীবনের নেগেটিভ ভাইব্রেশনগুলো পজিটিভ হোক। সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
 
 let index = 0;
@@ -45,12 +42,14 @@ function typeWriter() {
         index++;
         setTimeout(typeWriter, 40);
         
+        // লেখা বড় হলে চিঠি অটোমেটিক নিচের দিকে স্ক্রল হবে
         const letterDiv = document.querySelector('.letter');
-        letterDiv.scrollTop = letterDiv.scrollHeight;
+        if (letterDiv) {
+            letterDiv.scrollTop = letterDiv.scrollHeight;
+        }
     }
 }
 
-// ৪. খাম খোলার ফাংশন
 document.getElementById('envelope').addEventListener('click', function() {
     if (!this.classList.contains('open')) {
         this.classList.add('open');
@@ -58,7 +57,7 @@ document.getElementById('envelope').addEventListener('click', function() {
     }
 });
 
-// ৫. মাকড়সা জাল এনিমেশন (Spiderweb Animation)
+// ৪. মাকড়সা জাল এনিমেশন (Interactive Spiderweb)
 const canvas = document.getElementById('spiderweb-bg');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -127,4 +126,4 @@ function animate() {
 
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-                
+    
