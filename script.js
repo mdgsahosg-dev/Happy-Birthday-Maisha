@@ -1,3 +1,10 @@
+// --- Firebase কনফিগারেশন (সবার উইশ সেভ করার জন্য) ---
+const firebaseConfig = {
+    databaseURL: "https://birthday-wish-db-default-rtdb.firebaseio.com/" 
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 // ১. ড্রপডাউন সেট করা (Date, Month, Year)
 const daySelect = document.getElementById('day');
 daySelect.innerHTML = '<option value="" selected disabled>Date</option>'; 
@@ -26,6 +33,7 @@ document.getElementById('login-btn').addEventListener('click', function() {
     if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
+        loadComments(); // লগইন সফল হলে কমেন্ট লোড হবে
     } else {
         document.getElementById('error-msg').style.display = 'block';
     }
@@ -43,9 +51,8 @@ function typeWriter() {
         index++;
         setTimeout(typeWriter, 45);
         
-        // অটো স্ক্রল (লেখা বেশি হলে নিচে নামবে)
         const letterDiv = document.querySelector('.letter');
-        letterDiv.scrollTop = letterDiv.scrollHeight;
+        if (letterDiv) letterDiv.scrollTop = letterDiv.scrollHeight;
     }
 }
 
@@ -56,7 +63,50 @@ document.getElementById('envelope').addEventListener('click', function() {
     }
 });
 
-// ৪. মাকড়সা জাল এনিমেশন (Spiderweb)
+// --- ৪. রিয়েল-টাইম রঙিন উইশ সিস্টেম (নতুন সংযোজন) ---
+const sendBtn = document.getElementById('send-wish');
+const commentsDiv = document.getElementById('comments-container');
+
+// উইশ পোস্ট করা
+if (sendBtn) {
+    sendBtn.addEventListener('click', function() {
+        const name = document.getElementById('guest-name').value;
+        const msg = document.getElementById('guest-msg').value;
+
+        if (name && msg) {
+            database.ref('wishes').push().set({
+                username: name,
+                message: msg,
+                time: Date.now()
+            });
+            document.getElementById('guest-name').value = '';
+            document.getElementById('guest-msg').value = '';
+        } else {
+            alert("নাম এবং উইশ দুটোই লেখো ভাই!");
+        }
+    });
+}
+
+// ডাটাবেজ থেকে কমেন্ট লোড করা
+function loadComments() {
+    database.ref('wishes').on('value', (snapshot) => {
+        if (commentsDiv) {
+            commentsDiv.innerHTML = "";
+            snapshot.forEach((childSnapshot) => {
+                const data = childSnapshot.val();
+                const commentHTML = `
+                    <div class="comment-entry" style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #0ff;">
+                        <b style="color: #4facfe; font-size: 14px;">${data.username}</b>
+                        <p style="margin: 5px 0 0; color: #ddd; font-size: 13px;">${data.message}</p>
+                    </div>`;
+                commentsDiv.innerHTML += commentHTML;
+            });
+            commentsDiv.scrollTop = commentsDiv.scrollHeight;
+        }
+    });
+}
+
+// ৫. মাকড়সা জাল এনিমেশন (Spiderweb)
 const canvas = document.getElementById('spiderweb-bg');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -70,7 +120,8 @@ window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mo
 
 class Particle {
     constructor(x, y) {
-        this.x = x; this.y = y; this.baseX = x; this.baseY = y;
+        this.x = x; this.y = y;
+        this.baseX = x; this.baseY = y;
         this.size = 2; this.density = (Math.random() * 30) + 1;
     }
     draw() {
@@ -120,4 +171,4 @@ function animate() {
 
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-        
+                                     
