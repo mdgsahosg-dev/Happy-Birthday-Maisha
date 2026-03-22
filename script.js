@@ -1,22 +1,24 @@
-// ১. ড্রপডাউন সেট করা
+// ১. // ১. ড্রপডাউন সেট করা (সঠিক নিয়ম)
 const daySelect = document.getElementById('day');
-daySelect.innerHTML = '<option value="">Date</option>'; // শুরুতে Date লেখা থাকবে
-for (let i = 1; i <= 31; i++) { daySelect.innerHTML += `<option value="${i}">${i}</option>`; }
+daySelect.innerHTML = '<option value="">Date</option>'; 
+for (let i = 1; i <= 31; i++) { 
+    daySelect.innerHTML += `<option value="${i}">${i}</option>`; 
+}
 
 const monthSelect = document.getElementById('month');
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-monthSelect.innerHTML = '<option value="">Month</option>'; // শুরুতে Month লেখা থাকবে
-months.forEach((m, i) => { monthSelect.innerHTML += `<option value="${i + 1}">${m}</option>`; });
+monthSelect.innerHTML = '<option value="">Month</option>'; 
+months.forEach((m, i) => { 
+    monthSelect.innerHTML += `<option value="${i + 1}">${m}</option>`; 
+});
 
 const yearSelect = document.getElementById('year');
-yearSelect.innerHTML = '<option value="">Year</option>'; // তোমার চাহিদা অনুযায়ী এখানে Year যোগ করা হলো
+// এখানে "Year" অপশনটি ফিক্সড করা হলো
+yearSelect.innerHTML = '<option value="" selected disabled>Year</option>'; 
 for (let i = 2004; i <= 2026; i++) { 
     yearSelect.innerHTML += `<option value="${i}">${i}</option>`; 
 }
-
-// ২. লগইন লজিক (২ মে ২০০৮)
-document.getElementById('login-btn').addEventListener('click', function() {
-    if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
+{
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
     } else {
