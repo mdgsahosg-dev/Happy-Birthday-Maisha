@@ -1,4 +1,4 @@
-// ১. ড্রপডাউন সেট করা (Date, Month, Year অপশনসহ)
+// ১. ড্রপডাউন সেট করা (Date, Month, Year)
 const daySelect = document.getElementById('day');
 daySelect.innerHTML = '<option value="" selected disabled>Date</option>'; 
 for (let i = 1; i <= 31; i++) { 
@@ -13,14 +13,15 @@ months.forEach((m, i) => {
 });
 
 const yearSelect = document.getElementById('year');
-// এখানে "Year" লেখাটি ডিফল্ট হিসেবে থাকবে
 yearSelect.innerHTML = '<option value="" selected disabled>Year</option>'; 
-// ২০০৪ থেকে ২০২৬ পর্যন্ত লুপ
 for (let i = 2004; i <= 2026; i++) { 
-    yearSelect.innerHTML += `<option value="${i}">${i}</option>`; 
+    let opt = document.createElement('option');
+    opt.value = i;
+    opt.innerHTML = i;
+    yearSelect.appendChild(opt);
 }
 
-// ২. লগইন লজিক (সঠিক তারিখ: ২ মে ২০০৮)
+// ২. লগইন লজিক
 document.getElementById('login-btn').addEventListener('click', function() {
     if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
         document.getElementById('login-screen').style.display = 'none';
@@ -30,8 +31,8 @@ document.getElementById('login-btn').addEventListener('click', function() {
     }
 });
 
-// ৩. টাইপিং ইফেক্ট ও অটো-স্ক্রল
-const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্টি, ২ মে মানে আজ তোর বিশেষ দিনে এই গরীবের পক্ষ থেকে এটাই ছোট্ট উইশ+gift। দোয়া করি তোর জীবনের নেগেটিভ ভাইব্রেশনগুলো পজিটিভ হোক। সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
+// ৩. টাইপিং ইফেক্ট
+const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্টি, ২ মে মানে আজ তোর এই বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট শুভেচ্ছাবার্তা+উপহার। দোয়া করি তোর জীবনের সকল দুঃখ কষ্ট আফসোস দূর হোক। দেখিস সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
 
 let index = 0;
 function typeWriter() {
@@ -40,13 +41,11 @@ function typeWriter() {
         let char = message.charAt(index);
         textElement.innerHTML += char === "\n" ? "<br>" : char;
         index++;
-        setTimeout(typeWriter, 40);
+        setTimeout(typeWriter, 45);
         
-        // লেখা বড় হলে চিঠি অটোমেটিক নিচের দিকে স্ক্রল হবে
+        // অটো স্ক্রল (লেখা বেশি হলে নিচে নামবে)
         const letterDiv = document.querySelector('.letter');
-        if (letterDiv) {
-            letterDiv.scrollTop = letterDiv.scrollHeight;
-        }
+        letterDiv.scrollTop = letterDiv.scrollHeight;
     }
 }
 
@@ -57,7 +56,7 @@ document.getElementById('envelope').addEventListener('click', function() {
     }
 });
 
-// ৪. মাকড়সা জাল এনিমেশন (Interactive Spiderweb)
+// ৪. মাকড়সা জাল এনিমেশন (Spiderweb)
 const canvas = document.getElementById('spiderweb-bg');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -71,22 +70,18 @@ window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mo
 
 class Particle {
     constructor(x, y) {
-        this.x = x; this.y = y;
-        this.baseX = x; this.baseY = y;
-        this.size = 2;
-        this.density = (Math.random() * 30) + 1;
+        this.x = x; this.y = y; this.baseX = x; this.baseY = y;
+        this.size = 2; this.density = (Math.random() * 30) + 1;
     }
     draw() {
         ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
         ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
     }
     update() {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
+        let dx = mouse.x - this.x; let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < mouse.radius) {
-            let forceX = dx / distance;
-            let forceY = dy / distance;
+            let forceX = dx / distance; let forceY = dy / distance;
             let force = (mouse.radius - distance) / mouse.radius;
             this.x -= forceX * force * 5; this.y -= forceY * force * 5;
         } else {
@@ -107,8 +102,7 @@ function init() {
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < particles.length; i++) {
-        particles[i].draw();
-        particles[i].update();
+        particles[i].draw(); particles[i].update();
         for (let j = i; j < particles.length; j++) {
             let dx = particles[i].x - particles[j].x;
             let dy = particles[i].y - particles[j].y;
@@ -126,4 +120,4 @@ function animate() {
 
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-    
+        
