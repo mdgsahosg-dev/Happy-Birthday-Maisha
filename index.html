@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wish!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&family=Freehand&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="login-screen" class="screen">
+        <div class="login-box">
+            <h2>নিরাপত্তা যাচাই 🔒</h2>
+            <p class="instruction">সারপ্রাইজটি দেখতে মাইশার সঠিক জন্মতারিখ সিলেক্ট করো:</p>
+            <div class="inputs">
+                <select id="day">
+                    <option value="">দিন</option>
+                </select>
+                <select id="month">
+                    <option value="">মাস</option>
+                    <option value="5">মে</option>
+                </select>
+                <select id="year">
+                    <option value="">সাল</option>
+                </select>
+            </div>
+            <button id="login-btn">Click Here</button>
+            <p id="error-msg" style="color: red; display: none; margin-top: 10px;">ভুল তারিখ! আবার চেষ্টা করো।</p>
+        </div>
+    </div>
+
+    <div id="surprise-screen" class="screen" style="display: none;">
+        <div class="balloons">
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+            <div class="balloon"></div>
+        </div>
+
+        <p class="instruction top-inst">খামটির ওপর ক্লিক করে চিঠিটি বের করো! ✨</p>
+        
+        <div class="container">
+            <div class="envelope-wrapper" id="envelope">
+                <div class="envelope">
+                    <div class="letter">
+                        <div class="text">
+                            <h2 class="title">শুভ জন্মদিন, মাইশা!</h2>
+                            <p>প্রিয় বেস্ট ফ্রেন্ড,</p>
+                            <p>২ মে মানে আজ তোর বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট একটা উইশ+উপহার। দোয়া করি যেন তুই তোর জীবনের নেগেটিভ ভাইব্রেশনগুলো কে পজিটিভ ভাইব্রেশনে রূপান্তর করতে পারিস। আশা করি, সামনের বছরগুলো তোর জন্য আরও সুন্দর হবে।</p>
+                            <p>ভালো থাক, সুস্থ থাক এবং সবসময় হাসি-খুশি থাক। এটুকুই চাই সবসময়;</p>
+                            <p class="love">অনেক ভালোবাসা রইলো।</p>
+                            <p class="signature">ইতি,<br>তোর জানোয়ার</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="heart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+                  </html>
+                              
