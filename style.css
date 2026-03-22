@@ -89,3 +89,56 @@ button:hover { transform: scale(1.05); }
 .envelope-wrapper.open .heart { display: none; }
 
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+/* উইশ বক্সের নতুন লুক */
+#wish-box {
+    background: rgba(20, 20, 20, 0.9) !important;
+    border: 2px solid #0ff !important;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    animation: borderGlow 3s infinite alternate;
+}
+
+@keyframes borderGlow {
+    from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); }
+    to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
+}
+
+/* কমেন্ট লিস্টের স্টাইল */
+.comment-entry {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 3px solid #0ff;
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* ইনপুট ফিল্ড ডিজাইন */
+#guest-name, #guest-msg {
+    background: #222 !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    transition: 0.3s;
+}
+
+#guest-name:focus, #guest-msg:focus {
+    border-color: #0ff !important;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+/* পোস্ট বাটন */
+#send-wish {
+    background: linear-gradient(45deg, #00f2fe, #4facfe) !important;
+    color: #000 !important;
+    transition: 0.3s;
+}
+
+#send-wish:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+    }
