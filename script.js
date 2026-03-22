@@ -1,4 +1,4 @@
-// ১. ড্রপডাউন সেট করা
+// ১. ড্রপডাউন সেট করা (Date, Month, Year)
 const daySelect = document.getElementById('day');
 daySelect.innerHTML = '<option value="" selected disabled>Date</option>'; 
 for (let i = 1; i <= 31; i++) { 
@@ -13,9 +13,8 @@ months.forEach((m, i) => {
 });
 
 const yearSelect = document.getElementById('year');
-// শুরুতে "Year" অপশনটি সেট করা
 yearSelect.innerHTML = '<option value="" selected disabled>Year</option>'; 
-// সালগুলো যুক্ত করার লুপ (সংশোধিত পদ্ধতি)
+// সালগুলো যুক্ত করার লুপ (২০০৪ থেকে ২০২৬)
 for (let i = 2004; i <= 2026; i++) { 
     let opt = document.createElement('option');
     opt.value = i;
@@ -23,9 +22,9 @@ for (let i = 2004; i <= 2026; i++) {
     yearSelect.appendChild(opt);
 }
 
-// ২. লগইন লজিক
+// ২. লগইন বাটন কাজ করার লজিক
 document.getElementById('login-btn').addEventListener('click', function() {
-    // সঠিক তারিখ ২ মে ২০০৮
+    // সঠিক জন্মতারিখ: ২ মে ২০০৮
     if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
@@ -34,7 +33,7 @@ document.getElementById('login-btn').addEventListener('click', function() {
     }
 });
 
-// ৩. টাইপিং ইফেক্ট
+// ৩. টাইপিং ইফেক্ট (চিঠির জন্য)
 const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্ট ফ্রেন্ড, ২ মে আজ তোর বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট উইশ। দোয়া করি তোর জীবনের নেগেটিভ ভাইব্রেশনগুলো পজিটিভ হোক। সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
 
 let index = 0;
@@ -51,6 +50,7 @@ function typeWriter() {
     }
 }
 
+// ৪. খাম খোলার ফাংশন
 document.getElementById('envelope').addEventListener('click', function() {
     if (!this.classList.contains('open')) {
         this.classList.add('open');
@@ -58,7 +58,7 @@ document.getElementById('envelope').addEventListener('click', function() {
     }
 });
 
-// ৪. মাকড়সা জাল এনিমেশন
+// ৫. মাকড়সা জাল এনিমেশন (Spiderweb Animation)
 const canvas = document.getElementById('spiderweb-bg');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -127,4 +127,4 @@ function animate() {
 
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-        
+                
