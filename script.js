@@ -1,9 +1,10 @@
-// --- Firebase কনফিগারেশন (সবার উইশ সেভ করার জন্য) ---
+// --- Firebase কনফিগারেশন ---
 const firebaseConfig = {
-    databaseURL: "https://birthday-wish-db-default-rtdb.firebaseio.com/" 
+    databaseURL: "https://maisha-birthday-default-rtdb.firebaseio.com/" 
 };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+
 
 // ১. ড্রপডাউন সেট করা (Date, Month, Year)
 const daySelect = document.getElementById('day');
