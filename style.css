@@ -1,208 +1,69 @@
-/* সাইবারপাঙ্ক গ্লোবাল স্টাইল */
 body {
     margin: 0;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #0d0d0d; /* গাঢ় সাইবারপাঙ্ক ব্যাকগ্রাউন্ড */
-    font-family: 'Hind Siliguri', sans-serif;
+    background: #000; /* পুরোপুরি কালো ব্যাকগ্রাউন্ড */
     overflow: hidden;
-    position: relative;
-    box-sizing: border-box;
 }
 
-/* ব্যাকগ্রাউন্ড সাইবার এনিমেশন */
-body::before {
-    content: "";
+#spiderweb-bg {
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background-image: 
-        radial-gradient(circle, #0ff1 1px, transparent 1px),
-        radial-gradient(circle, #f0f1 1px, transparent 1px);
-    background-size: 20px 20px;
-    background-position: 0 0, 10px 10px;
-    animation: grid_bg 5s infinite linear;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     z-index: 0;
-    opacity: 0.2;
-}
-
-@keyframes grid_bg {
-    0% { background-position: 0 0, 10px 10px; }
-    100% { background-position: -20px -20px, -10px -10px; }
 }
 
 .screen {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    position: absolute; z-index: 10;
 }
 
-/* লগইন বক্স (সাইবার স্টাইল) */
 .login-box {
-    background: #1a1a1a;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px #0ff3; /* হালকা নীল গ্লো */
-    text-align: center;
-    width: 85%;
-    max-width: 350px;
-    color: white;
-    border: 2px solid #0ff5; /* সাইবার বর্ডার */
+    background: rgba(25, 25, 25, 0.9);
+    padding: 30px; border-radius: 15px;
+    box-shadow: 0 0 25px #0ff5;
+    text-align: center; border: 1px solid #0ff5;
+    color: white; width: 85%; max-width: 350px;
 }
 
-.instruction { font-size: 14px; color: #aaa; margin-bottom: 20px; }
-.top-inst { position: absolute; top: 80px; font-weight: bold; color: #f0f; animation: bounce 2s infinite; text-shadow: 0 0 5px #f0f; }
+.inputs { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
 
-select { padding: 8px; border-radius: 5px; border: 1px solid #0ff5; background: #222; color: #fff; }
-button {
-    background: #0ff5; /* সাইবার বাটন */
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.3s;
-}
-button:hover { background: #0ff; }
-
-/* আধুনিক ও ভবিষ্যৎ এনভেলপ ডিজাইন */
-.container { position: relative; z-index: 10; margin-top: 50px; }
-
-.envelope-wrapper {
-    position: relative;
-    width: 300px;
-    height: 200px;
-    background-color: #f0f; /* বেগুনি কালার */
-    box-shadow: 0 0 25px #f0f5; /* গ্লোইং এনভেলপ */
-    cursor: pointer;
-    overflow: visible;
+select { 
+    padding: 8px; border-radius: 5px; 
+    background: #111; color: #0ff; 
+    border: 1px solid #0ff5; cursor: pointer;
 }
 
-/* খামের ভাঁজ (সাইবার স্টাইল) */
-.envelope-wrapper:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    z-index: 4;
-    border-top: 110px solid #f0f;
-    border-right: 150px solid transparent;
-    border-left: 150px solid transparent;
-    transform-origin: top;
-    transition: all 0.6s ease-in-out;
+button { 
+    background: #0ff; color: #000; 
+    border: none; padding: 12px 30px; 
+    border-radius: 25px; font-weight: bold; 
+    cursor: pointer; margin-top: 20px; 
+    box-shadow: 0 0 15px #0ff; transition: 0.3s;
 }
+button:hover { transform: scale(1.05); }
 
-/* খামের নিচের ও পাশের অংশ */
-.envelope-wrapper:after {
-    content: "";
-    position: absolute;
-    z-index: 3;
-    width: 0;
-    height: 0;
-    border-top: 110px solid transparent;
-    border-right: 150px solid #f9f;
-    border-bottom: 90px solid #f9f;
-    border-left: 150px solid #f9f;
-}
+.top-inst { position: absolute; top: 10%; color: #f0f; text-shadow: 0 0 10px #f0f; animation: bounce 2s infinite; font-weight: bold; text-align: center;}
 
-/* খাম খুললে ভাঁজ উল্টে যাবে */
-.envelope-wrapper.open:before {
-    transform: rotateX(180deg);
-    z-index: 0;
-}
+/* এনভেলপ স্টাইল */
+.envelope-wrapper { position: relative; width: 280px; height: 180px; background: #ff4d4d; cursor: pointer; box-shadow: 0 0 30px rgba(255, 77, 77, 0.3); }
+.envelope-wrapper:before { content: ""; position: absolute; top: 0; z-index: 4; border-top: 100px solid #ff4d4d; border-right: 140px solid transparent; border-left: 140px solid transparent; transform-origin: top; transition: 0.6s; }
+.envelope-wrapper.open:before { transform: rotateX(180deg); z-index: 0; }
 
-/* চিঠি (ভবিষ্যতের আধুনিক ডিজাইন) */
-.letter {
-    position: absolute;
-    left: 10%;
-    bottom: 5px;
-    width: 80%;
-    height: 95%;
-    background-color: #ffffff;
-    padding: 15px;
-    text-align: center;
-    transition: all 0.6s ease-in-out;
-    z-index: 1;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 5px;
-    box-sizing: border-box;
-    overflow: hidden;
-}
+.letter { position: absolute; left: 5%; bottom: 5px; width: 90%; height: 90%; background: #fff; padding: 15px; transition: 0.6s; z-index: 1; border-radius: 5px; }
+.envelope-wrapper.open .letter { bottom: 100px; transform: scale(1.1); z-index: 5; height: auto; max-height: 300px; overflow-y: auto;}
 
-/* ক্লিক করলে চিঠি বেরিয়ে আসবে */
-.envelope-wrapper.open .letter {
-    bottom: 120px;
-    transform: scale(1.15);
-    z-index: 5;
-    height: auto;
-    max-height: 280px;
-}
+.text { font-size: 13px; color: #333; line-height: 1.6; text-align: left; }
 
-.text .title { color: #f0f; font-size: 16px; margin: 0 0 5px 0; text-shadow: 0 0 5px #f0f; }
-.text p { font-size: 11px; color: #333; line-height: 1.4; text-align: justify; margin: 5px 0; }
-.love { font-weight: bold; margin-top: 8px !important; color: #f0f; text-shadow: 0 0 5px #f0f;}
-.signature { font-family: 'Freehand', cursive; font-size: 15px; color: #f0f; margin-top: 5px; display: block; text-shadow: 0 0 5px #f0f; }
-
-/* হার্ট বাটন (সাইবার স্টাইল) */
-.heart {
-    position: absolute;
-    top: 100px;
-    left: 135px;
-    width: 30px;
-    height: 30px;
-    background-color: #0ff; /* নীল গ্লো */
-    z-index: 6;
-    transform: rotate(-45deg);
-    transition: 0.5s;
-    box-shadow: 0 0 10px #0ff;
-}
-.heart:before, .heart:after { content: ""; position: absolute; width: 30px; height: 30px; background-color: #0ff; border-radius: 50%; box-shadow: 0 0 10px #0ff;}
+.heart { position: absolute; top: 85px; left: 125px; width: 30px; height: 30px; background: #fff; transform: rotate(-45deg); z-index: 6; }
+.heart:before, .heart:after { content: ""; position: absolute; width: 30px; height: 30px; background: #fff; border-radius: 50%; }
 .heart:before { top: -15px; left: 0; }
 .heart:after { top: 0; left: 15px; }
-
-.envelope-wrapper.open .heart { opacity: 0; pointer-events: none; }
-
-/* রঙিন তারা এনিমেশন */
-.balloons { display: none; } /* আগের বেলুন লুকিয়ে রাখা */
-
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
-.star {
-    position: absolute;
-    bottom: -150px;
-    width: 10px;
-    height: 10px;
-    background: #0ff;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); /* তারা শেপ */
-    opacity: 0.8;
-    animation: star_fly 7s infinite ease-in-out;
-    box-shadow: 0 0 5px;
-}
-
-/* বিভিন্ন রঙের তারা */
-.star:nth-child(1) { left: 10%; background: #fab1a0; }
-.star:nth-child(2) { left: 30%; background: #ffeaa7; animation-delay: 2s; }
-.star:nth-child(3) { left: 50%; background: #81ecec; animation-delay: 4s; }
-.star:nth-child(4) { left: 75%; background: #a29bfe; animation-delay: 1s; }
-.star:nth-child(5) { left: 90%; background: #55efc4; animation-delay: 6s; }
-
-@keyframes star_fly {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-120vh) rotate(360deg); }
-}
+.envelope-wrapper.open .heart { display: none; }
 
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+       
