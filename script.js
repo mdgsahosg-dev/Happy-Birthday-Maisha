@@ -13,11 +13,17 @@ months.forEach((m, i) => {
 });
 
 const yearSelect = document.getElementById('year');
-// এখানে "Year" অপশনটি ফিক্সড করা হলো
+// শুরুতে "Year" অপশনটি দেখাবে
 yearSelect.innerHTML = '<option value="" selected disabled>Year</option>'; 
+
+// সালগুলো যুক্ত করার লুপ
 for (let i = 2004; i <= 2026; i++) { 
-    yearSelect.innerHTML += `<option value="${i}">${i}</option>`; 
+    let opt = document.createElement('option');
+    opt.value = i;
+    opt.innerHTML = i;
+    yearSelect.appendChild(opt); // এই লাইনটি নিশ্চিত করো
 }
+
 {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
