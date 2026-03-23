@@ -5,70 +5,55 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// ভিডিও এলিমেন্ট সিলেক্ট করা
 const bdayVideo = document.getElementById('birthday-video');
 
-// ১. ড্রপডাউন সেট করা (Date, Month, Year)
+// ১. ড্রপডাউন সেট করা
 const daySelect = document.getElementById('day');
 daySelect.innerHTML = '<option value="" selected disabled>Date</option>'; 
-for (let i = 1; i <= 31; i++) { 
-    daySelect.innerHTML += `<option value="${i}">${i}</option>`; 
-}
+for (let i = 1; i <= 31; i++) { daySelect.innerHTML += `<option value="${i}">${i}</option>`; }
 
 const monthSelect = document.getElementById('month');
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 monthSelect.innerHTML = '<option value="" selected disabled>Month</option>'; 
-months.forEach((m, i) => { 
-    monthSelect.innerHTML += `<option value="${i + 1}">${m}</option>`; 
-});
+months.forEach((m, i) => { monthSelect.innerHTML += `<option value="${i + 1}">${m}</option>`; });
 
 const yearSelect = document.getElementById('year');
 yearSelect.innerHTML = '<option value="" selected disabled>Year</option>'; 
 for (let i = 2004; i <= 2026; i++) { 
     let opt = document.createElement('option');
-    opt.value = i;
-    opt.innerHTML = i;
+    opt.value = i; opt.innerHTML = i;
     yearSelect.appendChild(opt);
 }
 
-// ২. লগইন লজিক (আপডেট করা হয়েছে: ভিডিও প্লে করার জন্য)
+// ২. লগইন লজিক
 document.getElementById('login-btn').addEventListener('click', function() {
     if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
-        
-        // লগইন বাটনে ক্লিক করার সাথে সাথে ভিডিও প্লে হবে (সাউন্ডসহ)
-        if(bdayVideo) {
-            bdayVideo.play().catch(error => {
-                console.log("Video playback failed:", error);
-            });
-        }
-        
+        if(bdayVideo) { bdayVideo.play().catch(e => console.log(e)); }
         loadComments(); 
     } else {
         document.getElementById('error-msg').style.display = 'block';
     }
 });
 
-// ৩. ভিডিও শেষ হলে অটোমেটিক স্ক্রল ডাউন করার লজিক (নতুন)
+// ৩. ভিডিও শেষ হলে অটোমেটিক স্ক্রল
 if (bdayVideo) {
     bdayVideo.onended = function() {
         const envelopeSection = document.getElementById('envelope');
         if (envelopeSection) {
-            // ধীরে ধীরে স্ক্রল করে চিঠির কাছে নিয়ে যাবে
             envelopeSection.scrollIntoView({ behavior: 'smooth' });
-            
-            // খামটিতে একটি সুন্দর গ্লো ইফেক্ট দেওয়া
             envelopeSection.style.boxShadow = "0 0 50px #ff4d4d";
-            envelopeSection.style.transition = "box-shadow 1s ease-in-out";
         }
     };
 }
 
-// ৪. টাইপিং ইফেক্ট
+// ৪. টাইপিং এবং টগল (Toggle) ইফেক্ট + অ্যানিমেশন
 const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্টি, ২ মে মানে আজ তোর এই বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট শুভেচ্ছাবার্তা+উপহার। দোয়া করি তোর জীবনের সকল দুঃখ কষ্ট আফসোস দূর হোক। দেখিস সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
 
 let index = 0;
+let isFirstTime = true; // প্রথমবার টাইপিং হবে
+
 function typeWriter() {
     const textElement = document.getElementById('typewriter-text');
     if (index < message.length) {
@@ -76,20 +61,37 @@ function typeWriter() {
         textElement.innerHTML += char === "\n" ? "<br>" : char;
         index++;
         setTimeout(typeWriter, 45);
-        
         const letterDiv = document.querySelector('.letter');
         if (letterDiv) letterDiv.scrollTop = letterDiv.scrollHeight;
     }
 }
 
 document.getElementById('envelope').addEventListener('click', function() {
+    const heart = document.querySelector('.heart');
+    
     if (!this.classList.contains('open')) {
+        // চিঠি বের হওয়া
         this.classList.add('open');
-        setTimeout(typeWriter, 1000);
+        if (isFirstTime) {
+            setTimeout(typeWriter, 1000);
+            isFirstTime = false;
+        }
+        if(heart) heart.style.animation = "none"; // খোলার সময় অ্যানিমেশন বন্ধ
+    } else {
+        // চিঠি ভেতরে ঢোকানো
+        this.classList.remove('open');
+        
+        // ট্যাপ করার সময় হার্ট অ্যানিমেশন (টুইস্ট)
+        if(heart) {
+            heart.style.animation = "heart-beat 0.5s ease-in-out infinite"; 
+            setTimeout(() => {
+                heart.style.animation = "none"; // কিছুক্ষণ পর থামবে
+            }, 2000);
+        }
     }
 });
 
-// --- ৫. রিয়েল-টাইম রঙিন উইশ সিস্টেম ---
+// ৫. রিয়েল-টাইম উইশ সিস্টেম
 const sendBtn = document.getElementById('send-wish');
 const commentsDiv = document.getElementById('comments-container');
 
@@ -97,13 +99,8 @@ if (sendBtn) {
     sendBtn.addEventListener('click', function() {
         const name = document.getElementById('guest-name').value;
         const msg = document.getElementById('guest-msg').value;
-
         if (name && msg) {
-            database.ref('wishes').push().set({
-                username: name,
-                message: msg,
-                time: Date.now()
-            });
+            database.ref('wishes').push().set({ username: name, message: msg, time: Date.now() });
             document.getElementById('guest-name').value = '';
             document.getElementById('guest-msg').value = '';
         } else {
@@ -118,12 +115,11 @@ function loadComments() {
             commentsDiv.innerHTML = "";
             snapshot.forEach((childSnapshot) => {
                 const data = childSnapshot.val();
-                const commentHTML = `
+                commentsDiv.innerHTML += `
                     <div class="comment-entry" style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #0ff;">
                         <b style="color: #4facfe; font-size: 14px;">${data.username}</b>
                         <p style="margin: 5px 0 0; color: #ddd; font-size: 13px;">${data.message}</p>
                     </div>`;
-                commentsDiv.innerHTML += commentHTML;
             });
             commentsDiv.scrollTop = commentsDiv.scrollHeight;
         }
@@ -140,7 +136,6 @@ let particles = [];
 let mouse = { x: null, y: null, radius: 120 };
 
 window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
 
 class Particle {
     constructor(x, y) {
@@ -156,12 +151,11 @@ class Particle {
         let dx = mouse.x - this.x; let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < mouse.radius) {
-            let forceX = dx / distance; let forceY = dy / distance;
             let force = (mouse.radius - distance) / mouse.radius;
-            this.x -= forceX * force * 5; this.y -= forceY * force * 5;
+            this.x -= (dx / distance) * force * 5; this.y -= (dy / distance) * force * 5;
         } else {
-            if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 10;
-            if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 10;
+            this.x -= (this.x - this.baseX) / 10;
+            this.y -= (this.y - this.baseY) / 10;
         }
     }
 }
@@ -184,15 +178,13 @@ function animate() {
             let distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < 100) {
                 ctx.strokeStyle = `rgba(0, 255, 255, ${1 - (distance / 100)})`;
-                ctx.lineWidth = 1; ctx.beginPath();
-                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
                 ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
             }
         }
     }
     requestAnimationFrame(animate);
 }
-
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-    
+                
