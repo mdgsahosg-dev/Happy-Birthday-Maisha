@@ -6,17 +6,17 @@
 
 body {
     margin: 0;
-    min-height: 100vh; /* height: 100vh এর বদলে min-height যাতে স্ক্রল করা যায় */
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #000;
-    overflow-x: hidden; /* ডানে-বামে যেন স্ক্রল না হয় */
+    overflow-x: hidden;
     color: white;
 }
 
 #spiderweb-bg {
-    position: fixed; /* absolute এর বদলে fixed যাতে স্ক্রল করলেও ব্যাকগ্রাউন্ড ঠিক থাকে */
+    position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 0;
@@ -27,7 +27,7 @@ body {
     min-height: 100vh;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
-    position: relative; /* absolute এর বদলে relative যাতে কন্টেন্ট অনুযায়ী হাইট বাড়ে */
+    position: relative;
     z-index: 10;
     padding: 40px 10px;
 }
@@ -74,29 +74,35 @@ button:hover { transform: scale(1.05); }
     background: #ff4d4d; 
     cursor: pointer; 
     box-shadow: 0 0 30px rgba(255, 77, 77, 0.3); 
-    margin-bottom: 50px; /* উইশ বক্স থেকে দূরত্ব */
+    margin-bottom: 50px;
+    transition: transform 0.3s, box-shadow 0.3s; /* মসৃণ বড় হওয়ার জন্য */
 }
 
+/* খামের ওপরের অংশ (ট্রিয়াঙ্গেল) */
 .envelope-wrapper:before { 
     content: ""; position: absolute; top: 0; z-index: 4; 
     border-top: 100px solid #ff4d4d; 
     border-right: 140px solid transparent; 
     border-left: 140px solid transparent; 
-    transform-origin: top; transition: 0.6s; 
+    transform-origin: top; transition: transform 0.5s ease-in-out; 
 }
 .envelope-wrapper.open:before { transform: rotateX(180deg); z-index: 0; }
 
 /* ৫. চিঠি ডিজাইন */
 .letter { 
     position: absolute; left: 10%; bottom: 5px; width: 80%; 
-    background: #fff; padding: 15px; transition: 0.6s; 
+    background: #fff; padding: 15px; 
+    transition: bottom 0.6s ease-in-out, transform 0.6s, z-index 0.6s; 
     z-index: 1; border-radius: 5px; 
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    max-height: 250px; overflow-y: auto;
 }
 
+/* চিঠি বের হওয়ার স্টাইল */
 .envelope-wrapper.open .letter { 
-    bottom: 80px; transform: scale(1.1); z-index: 5; 
-    height: auto; max-height: 250px; overflow-y: auto;
+    bottom: 100px; /* একটু বেশি উপরে উঠবে */
+    transform: scale(1.1); 
+    z-index: 5; /* খামের ওপর দিয়ে আসবে */
 }
 
 .text { 
@@ -106,13 +112,19 @@ button:hover { transform: scale(1.05); }
 }
 
 /* হার্ট সিম্বল */
-.heart { position: absolute; top: 85px; left: 125px; width: 30px; height: 30px; background: #fff; transform: rotate(-45deg); z-index: 6; }
+.heart { 
+    position: absolute; top: 85px; left: 125px; width: 30px; height: 30px; 
+    background: #fff; transform: rotate(-45deg); z-index: 6; 
+    transition: opacity 0.3s;
+}
 .heart:before, .heart:after { content: ""; position: absolute; width: 30px; height: 30px; background: #fff; border-radius: 50%; }
 .heart:before { top: -15px; left: 0; }
 .heart:after { top: 0; left: 15px; }
-.envelope-wrapper.open .heart { display: none; }
 
-/* ৬. উইশ বক্স (ফেসবুক স্টাইল রঙিন সেকশন) */
+/* খাম খুললে হার্ট হালকা হয়ে যাবে বা মুছে যাবে */
+.envelope-wrapper.open .heart { opacity: 0; pointer-events: none; }
+
+/* ৬. উইশ বক্স */
 #wish-box {
     width: 95%; max-width: 380px;
     background: rgba(20, 20, 20, 0.95);
@@ -125,10 +137,9 @@ button:hover { transform: scale(1.05); }
 
 @keyframes borderGlow {
     from { border-color: #0ff; box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); }
-    to { border-color: #f0f; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); } /* রং পরিবর্তন হবে */
+    to { border-color: #f0f; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); }
 }
 
-/* কমেন্ট লিস্ট */
 .comment-entry {
     background: rgba(255, 255, 255, 0.08);
     padding: 12px; border-radius: 10px;
@@ -142,7 +153,6 @@ button:hover { transform: scale(1.05); }
     to { opacity: 1; transform: translateX(0); }
 }
 
-/* ইনপুট ফিল্ড ও বাটন */
 #guest-name, #guest-msg {
     width: 100%;
     background: #1a1a1a !important;
@@ -150,12 +160,6 @@ button:hover { transform: scale(1.05); }
     border: 1px solid #333 !important;
     padding: 10px; border-radius: 8px;
     margin-bottom: 10px; transition: 0.3s;
-}
-
-#guest-name:focus, #guest-msg:focus {
-    border-color: #0ff !important;
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-    outline: none;
 }
 
 #send-wish {
@@ -167,11 +171,10 @@ button:hover { transform: scale(1.05); }
     cursor: pointer; transition: 0.3s;
 }
 
-#send-wish:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.6);
-}
-
-/* এনিমেশনস */
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* ভিডিও প্লেয়ার ডিজাইন (যদি লাগে) */
+video {
+    transition: transform 0.5s;
+    }
     
