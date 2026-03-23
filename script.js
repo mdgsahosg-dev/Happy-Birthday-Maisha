@@ -37,13 +37,12 @@ document.getElementById('login-btn').addEventListener('click', function() {
     }
 });
 
-// ৩. ভিডিও শেষ হলে অটোমেটিক স্ক্রল
+// ৩. ভিডিও শেষ হলে অটোমেটিক স্ক্রল (আইডি এখন হার্টে, তাই কন্টেইনারে স্ক্রল হবে)
 if (bdayVideo) {
     bdayVideo.onended = function() {
-        const envelopeSection = document.getElementById('envelope');
-        if (envelopeSection) {
-            envelopeSection.scrollIntoView({ behavior: 'smooth' });
-            // এখান থেকে লাল গ্লো-এর লাইনটি সরিয়ে দেওয়া হয়েছে কারণ আমরা CSS-এ গ্লো অফ করেছি
+        const envelopeWrapper = document.querySelector('.envelope-wrapper');
+        if (envelopeWrapper) {
+            envelopeWrapper.scrollIntoView({ behavior: 'smooth' });
         }
     };
 }
@@ -52,52 +51,51 @@ if (bdayVideo) {
 const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্টি, ২ মে মানে আজ তোর এই বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট শুভেচ্ছাবার্তা+উপহার। দোয়া করি তোর জীবনের সকল দুঃখ কষ্ট আফসোস দূর হোক। দেখিস সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
 
 let index = 0;
-let isTyping = false; 
 
 function typeWriter() {
     const textElement = document.getElementById('typewriter-text');
     if (index < message.length) {
-        isTyping = true;
         let char = message.charAt(index);
         textElement.innerHTML += char === "\n" ? "<br>" : char;
         index++;
         setTimeout(typeWriter, 45);
         const letterDiv = document.querySelector('.letter');
         if (letterDiv) letterDiv.scrollTop = letterDiv.scrollHeight;
-    } else {
-        isTyping = false;
     }
 }
 
-document.getElementById('envelope').addEventListener('click', function() {
-    const heart = document.querySelector('.heart');
+// হার্টে ক্লিক করলে খাম খোলা বা বন্ধ করার লজিক
+document.getElementById('envelope').addEventListener('click', function(e) {
+    e.stopPropagation(); // হার্ট ছাড়া অন্য কোথাও ক্লিক হওয়া আটকাবে
+    
+    const heart = this;
+    const envelopeWrapper = this.parentElement; // মেইন খাম কন্টেইনার
     const textElement = document.getElementById('typewriter-text');
     
-    if (!this.classList.contains('open')) {
+    if (!envelopeWrapper.classList.contains('open')) {
         // খাম খোলা
-        this.classList.add('open');
+        envelopeWrapper.classList.add('open');
         
-        // যদি টেক্সট খালি থাকে (রিসেট হওয়ার পর), তবে টাইপিং শুরু করো
+        // টাইপিং শুরু
         if (index === 0) {
-            setTimeout(typeWriter, 1200); // অ্যানিমেশন শেষ হওয়ার পর শুরু হবে
+            setTimeout(typeWriter, 1200); 
         }
+        heart.style.animation = "none"; // খোলার সময় বিট বন্ধ
     } else {
         // খাম বন্ধ করা
-        this.classList.remove('open');
+        envelopeWrapper.classList.remove('open');
         
-        // চিঠি ভেতরে যাওয়ার সাথে সাথে টাইপিং রিসেট করো (টুইস্ট)
+        // টাইপিং রিসেট
         setTimeout(() => {
             textElement.innerHTML = ""; 
             index = 0; 
-        }, 700); // চিঠির ফোল্ডিং ট্রানজিশনের সাথে সামঞ্জস্য রেখে সময় দেওয়া হয়েছে
+        }, 700);
 
-        // ট্যাপ করার সময় হার্ট অ্যানিমেশন
-        if(heart) {
-            heart.style.animation = "heart-beat 0.5s ease-in-out infinite"; 
-            setTimeout(() => {
-                heart.style.animation = "none"; 
-            }, 2000);
-        }
+        // হার্ট বিট ইফেক্ট (টুইস্ট)
+        heart.style.animation = "heart-beat 0.5s ease-in-out infinite"; 
+        setTimeout(() => {
+            heart.style.animation = "none"; 
+        }, 2000);
     }
 });
 
@@ -197,4 +195,4 @@ function animate() {
 }
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-            
+    
