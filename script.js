@@ -25,6 +25,17 @@ for (let i = 2004; i <= 2026; i++) {
     yearSelect.appendChild(opt);
 }
 
+// --- নতুন যোগ করা কনফেটি ফাংশন ---
+function celebrate() {
+    confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#ff4d4d', '#00f2fe', '#f0f', '#fff', '#FFD700'], // তোমার থিমের সাথে নীল এবং সোনালী রঙ যোগ করা হয়েছে
+        zIndex: 9999
+    });
+}
+
 // ২. লগইন লজিক
 document.getElementById('login-btn').addEventListener('click', function() {
     if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
@@ -37,7 +48,7 @@ document.getElementById('login-btn').addEventListener('click', function() {
     }
 });
 
-// ৩. ভিডিও শেষ হলে অটোমেটিক স্ক্রল (আইডি এখন হার্টে, তাই কন্টেইনারে স্ক্রল হবে)
+// ৩. ভিডিও শেষ হলে অটোমেটিক স্ক্রল
 if (bdayVideo) {
     bdayVideo.onended = function() {
         const envelopeWrapper = document.querySelector('.envelope-wrapper');
@@ -64,23 +75,26 @@ function typeWriter() {
     }
 }
 
-// হার্টে ক্লিক করলে খাম খোলা বা বন্ধ করার লজিক
+// হার্টে ক্লিক করলে খাম খোলা বা বন্ধ করার লজিক (কনফেটি এখানে যোগ করা হয়েছে)
 document.getElementById('envelope').addEventListener('click', function(e) {
-    e.stopPropagation(); // হার্ট ছাড়া অন্য কোথাও ক্লিক হওয়া আটকাবে
+    e.stopPropagation(); 
     
     const heart = this;
-    const envelopeWrapper = this.parentElement; // মেইন খাম কন্টেইনার
+    const envelopeWrapper = this.parentElement; 
     const textElement = document.getElementById('typewriter-text');
     
     if (!envelopeWrapper.classList.contains('open')) {
         // খাম খোলা
         envelopeWrapper.classList.add('open');
         
+        // --- কনফেটি ট্রিগার ---
+        celebrate();
+        
         // টাইপিং শুরু
         if (index === 0) {
             setTimeout(typeWriter, 1200); 
         }
-        heart.style.animation = "none"; // খোলার সময় বিট বন্ধ
+        heart.style.animation = "none"; 
     } else {
         // খাম বন্ধ করা
         envelopeWrapper.classList.remove('open');
@@ -91,7 +105,6 @@ document.getElementById('envelope').addEventListener('click', function(e) {
             index = 0; 
         }, 700);
 
-        // হার্ট বিট ইফেক্ট (টুইস্ট)
         heart.style.animation = "heart-beat 0.5s ease-in-out infinite"; 
         setTimeout(() => {
             heart.style.animation = "none"; 
@@ -195,4 +208,3 @@ function animate() {
 }
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-    
