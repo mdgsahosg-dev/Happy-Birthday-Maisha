@@ -5,6 +5,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
+// ভিডিও এলিমেন্ট সিলেক্ট করা
+const bdayVideo = document.getElementById('birthday-video');
 
 // ১. ড্রপডাউন সেট করা (Date, Month, Year)
 const daySelect = document.getElementById('day');
@@ -29,18 +31,41 @@ for (let i = 2004; i <= 2026; i++) {
     yearSelect.appendChild(opt);
 }
 
-// ২. লগইন লজিক
+// ২. লগইন লজিক (আপডেট করা হয়েছে: ভিডিও প্লে করার জন্য)
 document.getElementById('login-btn').addEventListener('click', function() {
     if (daySelect.value === "2" && monthSelect.value === "5" && yearSelect.value === "2008") {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('surprise-screen').style.display = 'flex';
-        loadComments(); // লগইন সফল হলে কমেন্ট লোড হবে
+        
+        // লগইন বাটনে ক্লিক করার সাথে সাথে ভিডিও প্লে হবে (সাউন্ডসহ)
+        if(bdayVideo) {
+            bdayVideo.play().catch(error => {
+                console.log("Video playback failed:", error);
+            });
+        }
+        
+        loadComments(); 
     } else {
         document.getElementById('error-msg').style.display = 'block';
     }
 });
 
-// ৩. টাইপিং ইফেক্ট
+// ৩. ভিডিও শেষ হলে অটোমেটিক স্ক্রল ডাউন করার লজিক (নতুন)
+if (bdayVideo) {
+    bdayVideo.onended = function() {
+        const envelopeSection = document.getElementById('envelope');
+        if (envelopeSection) {
+            // ধীরে ধীরে স্ক্রল করে চিঠির কাছে নিয়ে যাবে
+            envelopeSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // খামটিতে একটি সুন্দর গ্লো ইফেক্ট দেওয়া
+            envelopeSection.style.boxShadow = "0 0 50px #ff4d4d";
+            envelopeSection.style.transition = "box-shadow 1s ease-in-out";
+        }
+    };
+}
+
+// ৪. টাইপিং ইফেক্ট
 const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্টি, ২ মে মানে আজ তোর এই বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট শুভেচ্ছাবার্তা+উপহার। দোয়া করি তোর জীবনের সকল দুঃখ কষ্ট আফসোস দূর হোক। দেখিস সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
 
 let index = 0;
@@ -64,11 +89,10 @@ document.getElementById('envelope').addEventListener('click', function() {
     }
 });
 
-// --- ৪. রিয়েল-টাইম রঙিন উইশ সিস্টেম (নতুন সংযোজন) ---
+// --- ৫. রিয়েল-টাইম রঙিন উইশ সিস্টেম ---
 const sendBtn = document.getElementById('send-wish');
 const commentsDiv = document.getElementById('comments-container');
 
-// উইশ পোস্ট করা
 if (sendBtn) {
     sendBtn.addEventListener('click', function() {
         const name = document.getElementById('guest-name').value;
@@ -88,7 +112,6 @@ if (sendBtn) {
     });
 }
 
-// ডাটাবেজ থেকে কমেন্ট লোড করা
 function loadComments() {
     database.ref('wishes').on('value', (snapshot) => {
         if (commentsDiv) {
@@ -107,7 +130,7 @@ function loadComments() {
     });
 }
 
-// ৫. মাকড়সা জাল এনিমেশন (Spiderweb)
+// ৬. মাকড়সা জাল এনিমেশন (Spiderweb)
 const canvas = document.getElementById('spiderweb-bg');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -172,4 +195,4 @@ function animate() {
 
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-                                     
+    
