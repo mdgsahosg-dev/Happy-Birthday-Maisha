@@ -67,69 +67,86 @@ button:hover { transform: scale(1.05); }
     margin-bottom: 20px;
 }
 
-/* ৪. এনভেলপ (খাম) স্টাইল - গ্লো বন্ধ */
+/* ৪. এনভেলপ (খাম) স্টাইল - শেপ আপডেট (গ্লো ছাড়া) */
 .envelope-wrapper { 
     position: relative; 
     width: 280px; height: 180px; 
-    background: #ff4d4d; 
-    cursor: pointer; 
+    background: #ff4d4d; /* সলিড লাল */
     margin-bottom: 50px;
-    transition: transform 0.3s;
-    box-shadow: none; /* লাল গ্লো পুরোপুরি বন্ধ */
+    transition: 0.3s;
+    border-radius: 8px; 
+    box-shadow: none;
 }
 
+/* ট্র্যাপেজিয়াম শেপের ফ্ল্যাপ (ওপরের অংশ) */
 .envelope-wrapper:before { 
     content: ""; position: absolute; top: 0; z-index: 4; 
-    border-top: 100px solid #ff4d4d; 
-    border-right: 140px solid transparent; 
-    border-left: 140px solid transparent; 
-    transform-origin: top; transition: transform 0.5s ease-in-out; 
+    width: 100%; height: 100px; 
+    background: #ff4d4d; 
+    /* ছবির মতো ট্র্যাপেজিয়াম শেপ */
+    clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%); 
+    border-radius: 0 0 20px 20px;
+    transform-origin: top; 
+    transition: transform 0.5s ease-in-out, z-index 0.5s; 
 }
-.envelope-wrapper.open:before { transform: rotateX(180deg); z-index: 0; }
 
-/* ৫. চিঠি ডিজাইন - ফোল্ডিং অ্যানিমেশন আপডেট */
+.envelope-wrapper.open:before { 
+    transform: rotateX(180deg); 
+    z-index: 0; 
+}
+
+/* ৫. চিঠি ডিজাইন */
 .letter { 
     position: absolute; left: 10%; bottom: 0; width: 80%; 
     background: #fff; padding: 15px; 
     transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s, z-index 0.7s; 
     z-index: 1; border-radius: 5px; 
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
     max-height: 250px; overflow-y: auto;
-    transform: scaleY(0); /* শুরুতে ফোল্ড হয়ে থাকবে */
+    transform: scaleY(0); 
     transform-origin: bottom; 
     opacity: 0;
 }
 
-/* চিঠি বের হওয়ার জন্য transform */
 .envelope-wrapper.open .letter { 
-    transform: translateY(-115px) scaleY(1) scale(1.1); 
+    transform: translateY(-120px) scaleY(1) scale(1.1); 
     opacity: 1;
     z-index: 5; 
 }
 
 .text { 
-    font-size: 12px; 
+    font-size: 13px; 
     color: #333; line-height: 1.6; text-align: left; 
     word-wrap: break-word;
 }
 
-/* হার্ট সিম্বল এবং নিওন ইফেক্ট */
+/* হার্ট সিম্বল (শুধুমাত্র এখানে ক্লিক করলে কাজ হবে) */
 .heart { 
-    position: absolute; top: 85px; left: 125px; width: 30px; height: 30px; 
-    background: #fff; transform: rotate(-45deg); z-index: 6; 
-    transition: filter 0.3s, opacity 0.3s;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8)); /* স্থায়ী হালকা নিওন */
+    position: absolute; 
+    top: 80px; left: 125px; 
+    width: 30px; height: 30px; 
+    background: #fff; transform: rotate(-45deg); 
+    z-index: 10; 
+    cursor: pointer;
+    transition: 0.3s;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
 }
 .heart:before, .heart:after { content: ""; position: absolute; width: 30px; height: 30px; background: #fff; border-radius: 50%; }
 .heart:before { top: -15px; left: 0; }
 .heart:after { top: 0; left: 15px; }
 
-/* টাচ/ক্লিক করলে হার্টে কড়া নিওন গ্লো */
-.envelope-wrapper:active .heart {
+/* হার্টে টাচ করলে নিওন গ্লো ইফেক্ট */
+.heart:hover, .heart:active {
     filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 25px #ff4d4d);
+    transform: rotate(-45deg) scale(1.1);
 }
 
-.envelope-wrapper.open .heart { opacity: 0; pointer-events: none; }
+/* খাম খুললে হার্ট কিছুটা নিচে চলে যাবে বা হালকা হয়ে যাবে */
+.envelope-wrapper.open .heart { 
+    opacity: 0.2; 
+    pointer-events: auto; /* বন্ধ করার জন্য ক্লিকযোগ্য রাখা হয়েছে */
+    z-index: 2;
+}
 
 /* ৬. উইশ বক্স */
 #wish-box {
@@ -163,16 +180,12 @@ button:hover { transform: scale(1.05); }
     margin-bottom: 10px;
 }
 
-#send-wish {
-    width: 100%;
-    background: linear-gradient(45deg, #00f2fe, #4facfe) !important;
-    color: #000 !important;
-    border: none; padding: 12px;
-    border-radius: 8px; font-weight: bold;
-    cursor: pointer;
-}
-
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-video { transition: transform 0.5s; }
-    
+/* হার্ট বিট এনিমেশন (বন্ধ করার সময় কাজ করবে) */
+@keyframes heart-beat {
+    0% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.2); }
+    100% { transform: rotate(-45deg) scale(1); }
+    }
+        
