@@ -43,49 +43,59 @@ if (bdayVideo) {
         const envelopeSection = document.getElementById('envelope');
         if (envelopeSection) {
             envelopeSection.scrollIntoView({ behavior: 'smooth' });
-            envelopeSection.style.boxShadow = "0 0 50px #ff4d4d";
+            // এখান থেকে লাল গ্লো-এর লাইনটি সরিয়ে দেওয়া হয়েছে কারণ আমরা CSS-এ গ্লো অফ করেছি
         }
     };
 }
 
-// ৪. টাইপিং এবং টগল (Toggle) ইফেক্ট + অ্যানিমেশন
+// ৪. টাইপিং এবং টগল (Toggle) ইফেক্ট + অটো-রিসেট
 const message = "শুভ জন্মদিন, মাইশা!\n\nপ্রিয় বেস্টি, ২ মে মানে আজ তোর এই বিশেষ দিনে এই গরীবের পক্ষ থেকে ছোট্ট শুভেচ্ছাবার্তা+উপহার। দোয়া করি তোর জীবনের সকল দুঃখ কষ্ট আফসোস দূর হোক। দেখিস সামনের বছরগুলো তোর জন্য সুন্দর হবে।\n\nসুস্থ থাক এবং সবসময় হাসি-খুশি থাক।\n\nইতি,\nতোর জানোয়ার";
 
 let index = 0;
-let isFirstTime = true; // প্রথমবার টাইপিং হবে
+let isTyping = false; 
 
 function typeWriter() {
     const textElement = document.getElementById('typewriter-text');
     if (index < message.length) {
+        isTyping = true;
         let char = message.charAt(index);
         textElement.innerHTML += char === "\n" ? "<br>" : char;
         index++;
         setTimeout(typeWriter, 45);
         const letterDiv = document.querySelector('.letter');
         if (letterDiv) letterDiv.scrollTop = letterDiv.scrollHeight;
+    } else {
+        isTyping = false;
     }
 }
 
 document.getElementById('envelope').addEventListener('click', function() {
     const heart = document.querySelector('.heart');
+    const textElement = document.getElementById('typewriter-text');
     
     if (!this.classList.contains('open')) {
-        // চিঠি বের হওয়া
+        // খাম খোলা
         this.classList.add('open');
-        if (isFirstTime) {
-            setTimeout(typeWriter, 1000);
-            isFirstTime = false;
+        
+        // যদি টেক্সট খালি থাকে (রিসেট হওয়ার পর), তবে টাইপিং শুরু করো
+        if (index === 0) {
+            setTimeout(typeWriter, 1200); // অ্যানিমেশন শেষ হওয়ার পর শুরু হবে
         }
-        if(heart) heart.style.animation = "none"; // খোলার সময় অ্যানিমেশন বন্ধ
     } else {
-        // চিঠি ভেতরে ঢোকানো
+        // খাম বন্ধ করা
         this.classList.remove('open');
         
-        // ট্যাপ করার সময় হার্ট অ্যানিমেশন (টুইস্ট)
+        // চিঠি ভেতরে যাওয়ার সাথে সাথে টাইপিং রিসেট করো (টুইস্ট)
+        setTimeout(() => {
+            textElement.innerHTML = ""; 
+            index = 0; 
+        }, 700); // চিঠির ফোল্ডিং ট্রানজিশনের সাথে সামঞ্জস্য রেখে সময় দেওয়া হয়েছে
+
+        // ট্যাপ করার সময় হার্ট অ্যানিমেশন
         if(heart) {
             heart.style.animation = "heart-beat 0.5s ease-in-out infinite"; 
             setTimeout(() => {
-                heart.style.animation = "none"; // কিছুক্ষণ পর থামবে
+                heart.style.animation = "none"; 
             }, 2000);
         }
     }
@@ -187,4 +197,4 @@ function animate() {
 }
 init(); animate();
 window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
-                
+            
