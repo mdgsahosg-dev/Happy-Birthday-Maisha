@@ -67,7 +67,7 @@ button:hover { transform: scale(1.05); }
     margin-bottom: 20px;
 }
 
-/* ৪. এনভেলপ (খাম) স্টাইল */
+/* ৪. এনভেলপ (খাম) স্টাইল - গ্লো বন্ধ */
 .envelope-wrapper { 
     position: relative; 
     width: 280px; height: 180px; 
@@ -75,7 +75,7 @@ button:hover { transform: scale(1.05); }
     cursor: pointer; 
     margin-bottom: 50px;
     transition: transform 0.3s;
-    /* খামের চারপাশের গ্লো অফ করে দেওয়া হয়েছে */
+    box-shadow: none; /* লাল গ্লো পুরোপুরি বন্ধ */
 }
 
 .envelope-wrapper:before { 
@@ -87,19 +87,23 @@ button:hover { transform: scale(1.05); }
 }
 .envelope-wrapper.open:before { transform: rotateX(180deg); z-index: 0; }
 
-/* ৫. চিঠি ডিজাইন (নিচে পুরোপুরি ঢোকার জন্য আপডেট) */
+/* ৫. চিঠি ডিজাইন - ফোল্ডিং অ্যানিমেশন আপডেট */
 .letter { 
     position: absolute; left: 10%; bottom: 0; width: 80%; 
     background: #fff; padding: 15px; 
-    transition: transform 0.6s ease-in-out, z-index 0.6s; 
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s, z-index 0.7s; 
     z-index: 1; border-radius: 5px; 
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     max-height: 250px; overflow-y: auto;
+    transform: scaleY(0); /* শুরুতে ফোল্ড হয়ে থাকবে */
+    transform-origin: bottom; 
+    opacity: 0;
 }
 
-/* চিঠি বের হওয়ার জন্য transform ব্যবহার */
+/* চিঠি বের হওয়ার জন্য transform */
 .envelope-wrapper.open .letter { 
-    transform: translateY(-110px) scale(1.1); 
+    transform: translateY(-115px) scaleY(1) scale(1.1); 
+    opacity: 1;
     z-index: 5; 
 }
 
@@ -109,17 +113,18 @@ button:hover { transform: scale(1.05); }
     word-wrap: break-word;
 }
 
-/* হার্ট সিম্বল এবং টাচ করলে গ্লো */
+/* হার্ট সিম্বল এবং নিওন ইফেক্ট */
 .heart { 
     position: absolute; top: 85px; left: 125px; width: 30px; height: 30px; 
     background: #fff; transform: rotate(-45deg); z-index: 6; 
     transition: filter 0.3s, opacity 0.3s;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8)); /* স্থায়ী হালকা নিওন */
 }
 .heart:before, .heart:after { content: ""; position: absolute; width: 30px; height: 30px; background: #fff; border-radius: 50%; }
 .heart:before { top: -15px; left: 0; }
 .heart:after { top: 0; left: 15px; }
 
-/* শুধুমাত্র টাচ/ক্লিক করার সময় হার্টে গ্লো হবে */
+/* টাচ/ক্লিক করলে হার্টে কড়া নিওন গ্লো */
 .envelope-wrapper:active .heart {
     filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 25px #ff4d4d);
 }
@@ -142,7 +147,6 @@ button:hover { transform: scale(1.05); }
     to { border-color: #f0f; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); }
 }
 
-/* বাকি অংশ যেমন ছিল */
 .comment-entry {
     background: rgba(255, 255, 255, 0.08);
     padding: 12px; border-radius: 10px;
@@ -171,4 +175,4 @@ button:hover { transform: scale(1.05); }
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
 video { transition: transform 0.5s; }
-                     
+    
