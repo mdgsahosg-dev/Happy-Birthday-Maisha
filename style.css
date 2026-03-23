@@ -1,7 +1,9 @@
-/* ১. ফন্ট ও গ্লোবাল সেটিং */
+/* ১. ফন্ট ও গ্লোবাল সেটিং - সিলেকশন এবং ট্যাব হাইলাইট রিমুভ */
 * {
     box-sizing: border-box;
     font-family: 'Hind Siliguri', sans-serif !important;
+    /* মোবাইল ব্রাউজারে বাটন বা লিঙ্কে ক্লিকের সময় নীল হাইলাইট বন্ধ করার জন্য */
+    -webkit-tap-highlight-color: transparent; 
 }
 
 body {
@@ -13,6 +15,17 @@ body {
     background: #000;
     overflow-x: hidden;
     color: white;
+    /* পুরো সাইটে টেক্সট কপি/সিলেক্ট করা বন্ধ করার জন্য */
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+}
+
+/* ২. ইনপুট বক্সে যাতে ইউজাররা লিখতে পারে, তাই সেখানে সিলেকশন এলাও করা */
+input, textarea, select {
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 #spiderweb-bg {
@@ -32,7 +45,7 @@ body {
     padding: 40px 10px;
 }
 
-/* ২. লগইন বক্স ডিজাইন */
+/* ৩. লগইন বক্স ডিজাইন */
 .login-box {
     background: rgba(25, 25, 25, 0.9);
     padding: 30px; border-radius: 15px;
@@ -59,7 +72,7 @@ button {
 }
 button:hover { transform: scale(1.05); }
 
-/* ৩. সারপ্রাইজ স্ক্রিন এলিমেন্টস */
+/* ৪. সারপ্রাইজ স্ক্রিন এলিমেন্টস */
 .top-inst { 
     color: #f0f; 
     text-shadow: 0 0 10px #f0f; animation: bounce 2s infinite; 
@@ -67,7 +80,7 @@ button:hover { transform: scale(1.05); }
     margin-bottom: 20px;
 }
 
-/* ৪. এনভেলপ (খাম) স্টাইল - সাদা বিট ও আকাশী চিঠি */
+/* ৫. এনভেলপ (খাম) স্টাইল */
 .envelope-wrapper { 
     position: relative; 
     width: 280px; height: 180px; 
@@ -75,18 +88,14 @@ button:hover { transform: scale(1.05); }
     margin-bottom: 50px;
     transition: 0.3s;
     border-radius: 8px; 
-    /* খামের বডিতে চিকন সাদা বর্ডার */
     border: 1px solid rgba(255, 255, 255, 0.5); 
 }
 
-/* ট্র্যাপেজিয়াম শেপের ফ্ল্যাপ ও সাদা বিট */
 .envelope-wrapper:before { 
     content: ""; position: absolute; top: -1px; left: -1px; z-index: 4; 
     width: calc(100% + 2px); height: 100px; 
     background: #ff4d4d; 
-    /* ট্র্যাপেজিয়াম শেপ */
     clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%); 
-    /* ফ্ল্যাপের নিচে সাদা চিকন বিট */
     border-bottom: 2px solid white; 
     transform-origin: top; 
     transition: transform 0.5s ease-in-out, z-index 0.5s; 
@@ -97,10 +106,10 @@ button:hover { transform: scale(1.05); }
     z-index: 0; 
 }
 
-/* ৫. চিঠি ডিজাইন - আকাশী রঙ */
+/* ৬. চিঠি ডিজাইন - আকাশী রঙ */
 .letter { 
     position: absolute; left: 10%; bottom: 0; width: 80%; 
-    background: #87CEEB; /* Sky Blue রঙ */
+    background: #87CEEB; 
     padding: 15px; 
     transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s, z-index 0.7s; 
     z-index: 1; border-radius: 5px; 
@@ -119,12 +128,12 @@ button:hover { transform: scale(1.05); }
 
 .text { 
     font-size: 13px; 
-    color: #000; /* আকাশী রঙে কালো লেখা ভালো ফুটে উঠবে */
+    color: #000; 
     line-height: 1.6; text-align: left; 
     word-wrap: break-word;
 }
 
-/* হার্ট সিম্বল */
+/* ৭. হার্ট সিম্বল */
 .heart { 
     position: absolute; 
     top: 80px; left: 125px; 
@@ -150,7 +159,7 @@ button:hover { transform: scale(1.05); }
     z-index: 2;
 }
 
-/* ৬. উইশ বক্স */
+/* ৮. উইশ বক্স */
 #wish-box {
     width: 95%; max-width: 380px;
     background: rgba(20, 20, 20, 0.95);
